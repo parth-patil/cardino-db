@@ -46,13 +46,10 @@ object App {
    * Get the cardinality of the intersection of the BitSets
    */
   def getCardinality(app: String, attributes: Map[String, String]): Int = {
-    val bitSetOptions = attributes map { case (dim, value) =>
+    val bitSets = attributes.flatMap { case (dim, value) =>
       val dbKey = getKey(app, dim, value)
       db.get(dbKey)
     }
-
-    // Get rid of "None" from the Options Seq
-    val bitSets = bitSetOptions flatten
 
     // Take intersection of all the BitSets
     val finalResult = bitSets.foldLeft(bitSets.head) { _ and _ }
